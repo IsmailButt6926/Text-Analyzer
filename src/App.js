@@ -1,24 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
-
+import { useState } from "react";
+import "./App.css";
+import Navbar from "./components/Navbar";
+import Alert from "./components/Alert";
+import Textform from "./components/Textform";
+import About from "./components/About";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 function App() {
+  const [mode, setmode] = useState("light"); // wheter darkmode is enable or not
+
+  const togglemode = () => {
+    if (mode === "light") {
+      setmode("dark");
+      document.body.style.backgroundColor = "grey";
+    } else {
+      setmode("light");
+      document.body.style.backgroundColor = "White";
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Router>
+        <Navbar title="Textutils " mode={mode} togglemode={togglemode} />
+        <Alert alert="This is a message" />
+        <div className="container my-3">
+          <Switch>
+            <Route exact path="/">
+              <Textform mode={mode} heading="Enter the text to analyze" />
+            </Route>
+            <Route exact path="/about">
+              <About />
+            </Route>
+          </Switch>
+        </div>
+      </Router>
+    </>
   );
 }
 
